@@ -46,6 +46,10 @@ jobs:
       - name: Build
         run: cargo build --release
 
+      - name: Debug
+        run: echo "${{ github.ref }}"
+
+
   tag:
     name: Tag the release
     needs: ci
