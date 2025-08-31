@@ -55,7 +55,8 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
 
-    # if: ${{ github.ref == 'main' }}
+    # Pushed or merged to `main`
+    if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
       - name: Checkout
