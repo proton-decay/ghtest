@@ -29,9 +29,6 @@ jobs:
           cargo clippy --version
           cargo typify --version
 
-      - name: Regenerate models
-        run: ./scripts/generate.sh
-
       - name: Check for changes
         run: git diff --exit-code
 
@@ -79,5 +76,5 @@ jobs:
           echo "next=`cargo get workspace.package.version`" >> "$GITHUB_OUTPUT"
 
       - name: Create tag
-        if: ${{ step.versions.output.prev == format('v{0}', step.versions.output.next) }}
-        run: gh release create v${{ step.versions.output.next }} --notes "Release ${{ step.versions.output.next }}"
+        if: ${{ steps.versions.output.prev == format('v{0}', steps.versions.output.next) }}
+        run: gh release create v${{ steps.versions.output.next }} --notes "Release ${{ steps.versions.output.next }}"
