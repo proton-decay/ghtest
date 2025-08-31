@@ -27,7 +27,6 @@ jobs:
           cargo --version --verbose
           rustc --version
           cargo clippy --version
-          cargo typify --version
 
       - name: Check for changes
         run: git diff --exit-code
