@@ -61,6 +61,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       - name: Debug
         run: echo "${{ github.ref }}"
@@ -79,8 +81,14 @@ jobs:
       - name: Get versions
         id: versions
         run: |
-          echo "prev=`git describe --tags --abbrev=0`" >> "$GITHUB_OUTPUT"
-          echo "next=`cargo get workspace.package.version`" >> "$GITHUB_OUTPUT"
+          prev="$(git describe --tags --abbrev=0)"
+          next="$(cargo get workspace.package.version)"
+          echo "Versions: prev='$prev', next='$next'"
+          if [[ -z "$a" ]] || [[ -z "$b" ]] then
+            exit 1
+          fi
+          echo "prev=$prev" >> "$GITHUB_OUTPUT"
+          echo "next=$next" >> "$GITHUB_OUTPUT"
 
       - name: Create tag if version bumped
         if: ${{ steps.versions.output.prev != format('v{0}', steps.versions.output.next) }}
