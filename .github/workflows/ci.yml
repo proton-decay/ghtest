@@ -16,13 +16,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Update local toolchain
+      - name: Prepare local toolchain
         run: |
-          rustup update
           rustup component add clippy
-
-      - name: Toolchain info
-        run: |
           cargo --version --verbose
           rustc --version
           cargo clippy --version
@@ -67,13 +63,9 @@ jobs:
       - name: Debug
         run: echo "${{ github.ref }}"
 
-      - name: Update local toolchain
+      - name: Prepare toolchain
         run: |
-          rustup update
           cargo install cargo-get
-
-      - name: Toolchain info
-        run: |
           cargo --version --verbose
           rustc --version
           cargo get --version
