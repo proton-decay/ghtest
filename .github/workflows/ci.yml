@@ -81,13 +81,13 @@ jobs:
             echo "Failed to get the versions"
             exit 1
           fi
-          echo "prev=$prev" >> "$GITHUB_OUTPUT"
-          echo "next=$next" >> "$GITHUB_OUTPUT"
+          echo "prev=$prev\n" >> "$GITHUB_OUTPUT"
+          echo "next=$next\n" >> "$GITHUB_OUTPUT"
 
       - name: Create tag if version bumped
-        if: ${{ steps.versions.output.prev != format('v{0}', steps.versions.output.next) }}
+        if: ${{ steps.versions.outputs.prev != format('v{0}', steps.versions.outputs.next) }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v${{ steps.versions.output.next }} \
-              --notes "Release ${{ steps.versions.output.next }}"
+          gh release create v${{ steps.versions.outputs.next }} \
+              --notes "Release ${{ steps.versions.outputs.next }}"
