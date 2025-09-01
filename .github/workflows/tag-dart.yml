@@ -12,7 +12,7 @@ on:
 
 jobs:
 
-  tag-version:
+  tag-dart:
     name: Tag if version bumped
     runs-on: ubuntu-latest
     
