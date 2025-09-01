@@ -44,4 +44,4 @@ jobs:
   release:
     uses: proton-decay/ghtest/.github/workflows/tag-rust.yml@main
     secrets:
-      TOKEN:: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN:: ${{ secrets.GITHUB_TOKEN }}

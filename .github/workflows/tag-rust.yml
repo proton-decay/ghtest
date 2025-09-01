@@ -3,8 +3,9 @@ name: Tag if version bumped (Rust)
 on:
   workflow_call:
     secrets:
-      TOKEN:
+      GH_TOKEN:
         description: Github token
+        type: string
         required: true
 
 jobs:
@@ -50,7 +51,7 @@ jobs:
       - name: Create tag if version bumped
         if: steps.versions.outputs.prev != steps.versions.outputs.next
         env:
-          GH_TOKEN: ${{ secrets.TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           gh release create ${{ steps.versions.outputs.next }} \
               --notes "Release ${{ steps.versions.outputs.next }}"
