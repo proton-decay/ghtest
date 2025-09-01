@@ -7,10 +7,10 @@ on:
         description: Github token
         type: string
         required: true
-    secrets:
-      GH_TOKEN:
-        description: Github token
-        required: true
+    #secrets:
+    #  GH_TOKEN:
+    #    description: Github token
+    #    required: true
 
 jobs:
 
