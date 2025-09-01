@@ -2,15 +2,10 @@ name: Tag if version bumped (Rust)
 
 on:
   workflow_call:
-    inputs:
+    secrets:
       GH_TOKEN:
         description: Github token
-        type: string
         required: true
-    #secrets:
-    #  GH_TOKEN:
-    #    description: Github token
-    #    required: true
 
 jobs:
 

@@ -44,7 +44,5 @@ jobs:
   release:
     name: Release
     uses: ./.github/workflows/tag-rust.yml
-    with:
-      GH_TOKEN:: "xxx"
-    #secrets:
-    #  GH_TOKEN:: ${{ secrets.GITHUB_TOKEN }}
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
