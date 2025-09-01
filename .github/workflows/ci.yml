@@ -81,8 +81,8 @@ jobs:
             echo "Failed to get the versions"
             exit 1
           fi
-          echo "prev=$prev\n" >> "$GITHUB_OUTPUT"
-          echo "next=$next\n" >> "$GITHUB_OUTPUT"
+          echo "prev=$prev" >> "$GITHUB_OUTPUT"
+          echo "next=$next" >> "$GITHUB_OUTPUT"
 
       - name: Create tag if version bumped
         if: ${{ steps.versions.outputs.prev != format('v{0}', steps.versions.outputs.next) }}
