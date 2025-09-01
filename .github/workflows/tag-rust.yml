@@ -1,0 +1,55 @@
+name: Tag if version bumped (Rust)
+
+on:
+  workflow_call:
+    secrets:
+      github_token:
+        required: true
+
+jobs:
+
+  tag-rust:
+    name: Tag if version bumped
+    runs-on: ubuntu-latest
+    
+    # Pushed or merged to `main`
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install cargo-get
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-get
+
+      - name: Toolchain info
+        run: |
+          cargo --version --verbose
+          rustc --version
+          cargo get --version
+
+      - name: Get versions
+        id: versions
+        run: |
+          prev="$(git describe --tags --abbrev=0)"
+          next="v$(cargo get workspace.package.version)"
+          echo "Versions: prev='$prev', next='$next'"
+          if [[ -z "$prev" ]] || [[ -z "$next" ]] then
+            echo "Failed to get the versions"
+            exit 1
+          fi
+          echo "prev=$prev" >> "$GITHUB_OUTPUT"
+          echo "next=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag if version bumped
+        if: steps.versions.outputs.prev != steps.versions.outputs.next
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.versions.outputs.next }} \
+              --notes "Release ${{ steps.versions.outputs.next }}"
