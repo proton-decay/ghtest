@@ -60,12 +60,13 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Debug
-        run: echo "${{ github.ref }}"
+      - name: Install cargo-get
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-get
 
-      - name: Prepare toolchain
+      - name: Toolchain info
         run: |
-          cargo install cargo-get
           cargo --version --verbose
           rustc --version
           cargo get --version
@@ -73,7 +74,6 @@ jobs:
       - name: Get versions
         id: versions
         run: |
-          git log --all --decorate --oneline --graph
           prev="$(git describe --tags --abbrev=0)"
           next="$(cargo get workspace.package.version)"
           echo "Versions: prev='$prev', next='$next'"
@@ -87,7 +87,6 @@ jobs:
       - name: Create tag if version bumped
         if: ${{ steps.versions.outputs.prev }} != "v${{ steps.versions.outputs.next }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create v${{ steps.versions.outputs.next }} \
