@@ -7,7 +7,7 @@ on:
         required: false
         type: string
     secrets:
-      github_token:
+      gh_token:
         required: true
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
       - name: Create tag if version bumped
         if: steps.versions.outputs.prev != steps.versions.outputs.next
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.gh_token }}
         run: |
           gh release create ${{ steps.versions.outputs.next }} \
               --notes "Release ${{ steps.versions.outputs.next }}"
