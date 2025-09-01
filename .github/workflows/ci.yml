@@ -81,6 +81,7 @@ jobs:
       - name: Get versions
         id: versions
         run: |
+          git log --all --decorate --oneline --graph
           prev="$(git describe --tags --abbrev=0)"
           next="$(cargo get workspace.package.version)"
           echo "Versions: prev='$prev', next='$next'"
