@@ -77,7 +77,8 @@ jobs:
           prev="$(git describe --tags --abbrev=0)"
           next="$(cargo get workspace.package.version)"
           echo "Versions: prev='$prev', next='$next'"
-          if [[ -z "$a" ]] || [[ -z "$b" ]] then
+          if [[ -z "$prev" ]] || [[ -z "$next" ]] then
+            echo "Failed to get the versions"
             exit 1
           fi
           echo "prev=$prev" >> "$GITHUB_OUTPUT"
