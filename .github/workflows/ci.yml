@@ -42,7 +42,7 @@ jobs:
         run: cargo build --release
 
   release:
-    uses: proton-decay/ghtest/.github/workflows/tag-rust.yml@main
+    uses: ./.github/workflows/tag-rust.yml
     with:
       GH_TOKEN:: "xxx"
     secrets:
