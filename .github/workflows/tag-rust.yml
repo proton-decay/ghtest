@@ -9,8 +9,8 @@ on:
 
 jobs:
 
-  tag-rust:
-    name: Tag if version bumped
+  get:
+    name: Get current version
     runs-on: ubuntu-latest
     
     # Pushed or merged to `main`
@@ -37,20 +37,22 @@ jobs:
       - name: Get versions
         id: versions
         run: |
-          prev="$(git describe --tags --abbrev=0)"
           next="v$(cargo get workspace.package.version)"
-          echo "Versions: prev='$prev', next='$next'"
-          if [[ -z "$prev" ]] || [[ -z "$next" ]] then
-            echo "Failed to get the versions"
+          echo "Next version: '$next'"
+          if [[ -z "$next" ]] then
+            echo "Failed to get the version"
             exit 1
           fi
-          echo "prev=$prev" >> "$GITHUB_OUTPUT"
           echo "next=$next" >> "$GITHUB_OUTPUT"
 
-      - name: Create tag if version bumped
-        if: steps.versions.outputs.prev != steps.versions.outputs.next
-        env:
-          GH_TOKEN: ${{ secrets.gh_token }}
-        run: |
-          gh release create ${{ steps.versions.outputs.next }} \
-              --notes "Release ${{ steps.versions.outputs.next }}"
+    outputs:
+      next_version: ${{ steps.versions.outputs.next }}
+
+  tag:
+    name: Tag
+    needs: get_version
+    uses: ./.github/workflows/tag-version.yml
+    with:
+      next_version: ${{ needs.get.outputs.next_version }}
+    secrets:
+      gh_token: ${{ secrets.gh_token }}
