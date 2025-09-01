@@ -20,7 +20,6 @@ jobs:
         run: |
           rustup update
           rustup component add clippy
-          cargo install cargo-typify
 
       - name: Toolchain info
         run: |
@@ -62,6 +61,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           fetch-tags: true
 
       - name: Debug
