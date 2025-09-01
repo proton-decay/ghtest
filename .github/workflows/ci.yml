@@ -51,7 +51,7 @@ jobs:
 
 
   release:
-    name: Tag is version bumped
+    name: Tag if version bumped
     needs: ci
     runs-on: ubuntu-latest
 
@@ -82,8 +82,10 @@ jobs:
           echo "prev=`git describe --tags --abbrev=0`" >> "$GITHUB_OUTPUT"
           echo "next=`cargo get workspace.package.version`" >> "$GITHUB_OUTPUT"
 
-      - name: Create tag
+      - name: Create tag if version bumped
         if: ${{ steps.versions.output.prev != format('v{0}', steps.versions.output.next) }}
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release create v${{ steps.versions.output.next }} --notes "Release ${{ steps.versions.output.next }}"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v${{ steps.versions.output.next }} \
+              --notes "Release ${{ steps.versions.output.next }}"
