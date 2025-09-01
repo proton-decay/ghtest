@@ -5,6 +5,7 @@ on:
     inputs:
       GH_TOKEN:
         description: Github token
+        type: string
         required: true
     secrets:
       GH_TOKEN:
