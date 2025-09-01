@@ -50,7 +50,7 @@ jobs:
 
   tag:
     name: Tag
-    needs: get_version
+    needs: get
     uses: ./.github/workflows/tag-version.yml
     with:
       next_version: ${{ needs.get.outputs.next_version }}
