@@ -75,7 +75,7 @@ jobs:
         id: versions
         run: |
           prev="$(git describe --tags --abbrev=0)"
-          next="$(cargo get workspace.package.version)"
+          next="v$(cargo get workspace.package.version)"
           echo "Versions: prev='$prev', next='$next'"
           if [[ -z "$prev" ]] || [[ -z "$next" ]] then
             echo "Failed to get the versions"
@@ -85,10 +85,10 @@ jobs:
           echo "next=$next" >> "$GITHUB_OUTPUT"
 
       - name: Create tag if version bumped
-        if: steps.versions.outputs.prev != "v${{ steps.versions.outputs.next }}"
+        if: steps.versions.outputs.prev != steps.versions.outputs.next
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo ${{ steps.versions.outputs.prev }} "v${{ steps.versions.outputs.next }}"
-          gh release create v${{ steps.versions.outputs.next }} \
+          echo ${{ steps.versions.outputs.prev }} ${{ steps.versions.outputs.next }}
+          gh release create ${{ steps.versions.outputs.next }} \
               --notes "Release ${{ steps.versions.outputs.next }}"
