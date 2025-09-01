@@ -89,5 +89,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo ${{ steps.versions.outputs.prev }} "v${{ steps.versions.outputs.next }}"
           gh release create v${{ steps.versions.outputs.next }} \
               --notes "Release ${{ steps.versions.outputs.next }}"
